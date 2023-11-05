@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Upload Form</title>
+</head>
+<body>
+  <h1>Image Upload Form</h1>
+
+  <form action="http://localhost:3001/protduc/add" method="POST" enctype="multipart/form-data">
+    <label for="product_name">Product Name:</label>
+    <input type="text" name="product_name" required><br>
+
+    <label for="description">Description:</label>
+    <textarea name="descreption" required></textarea><br>
+
+    <label for="model">Model:</label>
+    <input type="text" name="model" required><br>
+
+    <label for="catalog_id">Catalog ID:</label>
+    <input type="text" name="catalog_id" ><br>
+
+    <label for="price">Catalog ID:</label>
+    <input type="text" name="price" ><br>
+
+    <label for="count">Count:</label>
+    <input type="number" name="count" required><br>
+
+    <label for="rating">Rating:</label>
+    <input type="number" name="rating" required><br>
+
+    <label for="image">Image:</label>
+    <input type="file" name="image" accept="image/*" required><br>
+    <label for="image2">Image:</label>
+    <input type="file" name="image" accept="image/*" required><br>
+
+    <label for="image3">Image:</label>
+    <input type="file" name="image" accept="image/*" required><br>
+
+    <label for="image4">Image:</label>
+    <input type="file" name="image" accept="image/*" required><br>
+
+
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
