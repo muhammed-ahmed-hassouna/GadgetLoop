@@ -1,39 +1,61 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../Assets/logo1.png";
 import { createPortal } from "react-dom";
 import { Link } from "react-router-dom";
 import cartPng from "../Assets/cart.png";
 import searchPng from "../Assets/search.png";
 import Cookies from 'js-cookie';
-
-
+import { useNavigate } from "react-router-dom";
 import Search from "./SearchBar";
-// import cartPng from "../assets/cart.png";
-// import searchPng from "../assets/search.png";
+import profileImg from '../Assets/cat.webp'
 
 const NavBar = ({isSignIn,setSignin,isAdmin,setAdmin}) => {
   const [isOpenMenu, setOpenMenu] = React.useState(false);
- 
-  // const [isSignIn, setSignin] = React.useState(false);
-  // const [isAdmin, setAdmin] = React.useState(false);
-
   const [isOpenProfile, setOpenProfile] = React.useState(false);
   const [isOpenSearch, setOpenSearch] = React.useState(false);
 
+
+  useEffect(() => {
+    try{
+      const user_id = Cookies.get("user_id")
+      // const googleToken = Cookies.get("connect")
+      const role = Cookies.get("Role")
+      // if(!googleToken){
+      //   setSignin(true)}
+       
+      if(!isNaN(user_id)){
+      setSignin(true)}
+      console.log(role)
+      if(role ==2){
+        setAdmin(true)
+      }
+
+    }catch(error){
+      console.log("Error",error)
+    }
  
+
+  }, []);
+
+ 
+  const navigate = useNavigate();
 
   function signOut() {
     setSignin(false);
     Cookies.remove('Token');
     Cookies.remove('user_id');
+    Cookies.remove('connect.sid');
+    // Cookies.session.destroy('connect.sid');
+    
     if(isAdmin==true){
       Cookies.remove('Role');
     }
+    navigate('/');
     
   }
 
   const loginNav = isSignIn ? (
-    <div className="relative">
+    <div className="relative ml-1">
       <button
         type="button"
         className="flex mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -48,14 +70,12 @@ const NavBar = ({isSignIn,setSignin,isAdmin,setAdmin}) => {
         <span className="sr-only">Open user menu</span>
         <img
           className="w-10 h-10 rounded-full"
-          src="/docs/images/people/profile-picture-3.jpg"
+           src={profileImg}
           alt=""
         />
       </button>
       <div
-        className={`absolute top-7 z-50 ${
-          isOpenProfile ? "" : "hidden"
-        } my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
+        className={`absolute top-7 z-50 ${isOpenProfile ? "" : "hidden"} my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600`}
         id="user-dropdown"
       >
         <div className="px-4 py-3">
@@ -69,22 +89,22 @@ const NavBar = ({isSignIn,setSignin,isAdmin,setAdmin}) => {
         <ul className="py-2" aria-labelledby="user-menu-button">
           {isAdmin && (
             <li>
-              <a
-                href="#"
+              <Link 
+                to="/Dashboard"
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
               >
                 Dashboard
-              </a>
+              </Link>
             </li>
           )}
 
           <li>
-            <a
-              href="#"
+            <Link
+              to="/ProfilePage"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
             >
-              Settings
-            </a>
+              Profile
+            </Link>
           </li>
           <li>
             <a
@@ -111,7 +131,7 @@ const NavBar = ({isSignIn,setSignin,isAdmin,setAdmin}) => {
       <Link to="/Register">
         <button
           type="button"
-          className="shadow-sm shadow-[#91a9bd] text-black bg-[#474CB8] hover:bg-[#3f44a7] font-medium rounded-lg text-sm px-2 py-2.5 md:ml-1 md:px-10 "
+          className="shadow-sm shadow-[#91a9bd] text-white bg-indigo-900 hover:bg-[#3f44a7] font-medium rounded-lg text-sm px-2 py-2.5 md:ml-1 md:px-10 "
         >
           Sign Up
         </button>

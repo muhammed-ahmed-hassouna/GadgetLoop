@@ -8,13 +8,13 @@
   transition: transform 0.3s ease-in-out;
 }
 
-.explore:hover img {
+/* .explore:hover img {
   transform: scale(1.3);
   -webkit-transform: scale(1.3);
   -moz-transform: scale(1.3);
   -ms-transform: scale(1.3);
   -o-transform: scale(1.3);
-}
+} */
 
 .explore button {
   display: none;

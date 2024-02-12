@@ -16,7 +16,7 @@ const authentication = passport.authenticate("google", {
 });
 
 const authenticationCallback = passport.authenticate("google", {
-    successRedirect: "/Home",
+    successRedirect: "http://localhost:3000/#",
     failureRedirect: "/auth/google/failure",
 });
 
@@ -62,10 +62,13 @@ const Home =(isLoggedIn,async (req, res) => {
 
             const secretKey = process.env.SECRET_KEY;
             const token = jwt.sign(payload, secretKey, { expiresIn: "7d" });
+            
             res.status(200).json({
                 message: "User added successfully",
-                token: token
+                token: token,
+                
             });
+            
         }
     } catch (error) {
         res.status(500).json({

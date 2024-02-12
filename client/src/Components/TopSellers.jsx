@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import cartPng from "../Assets/cart.png";
 
-function TopSellers({addProductToCart}) {
+function TopSellers({ addProductToCart }) {
   const [cardData, setCardData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 6;
@@ -12,7 +13,6 @@ function TopSellers({addProductToCart}) {
       .get("http://localhost:3001/home/top")
       .then((response) => {
         setCardData(response.data);
-        console.log("I am .................................................................",response.data)
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
@@ -20,20 +20,6 @@ function TopSellers({addProductToCart}) {
       });
   }, []);
   const [cart, setCart] = useState([]);
-
-  const addToCart = (product) => {
-    axios
-      .post("/cart/add", product) // Assuming there's a cart/add endpoint
-      .then((response) => {
-        // Assuming the response returns updated cart data
-        setCart(response.data);
-        console.log(response.data)
-        // console.log(`${product.product_name} added to cart.`);
-      })
-      .catch((error) => {
-        console.error("Error adding to cart:", error);
-      });
-  };
 
   const indexOfLastCard = currentPage * cardsPerPage;
   const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -75,11 +61,11 @@ function TopSellers({addProductToCart}) {
           Top Sellers
         </h2>
       </div>
-      <div className="p-1 flex flex-wrap items-center justify-center mb-20 mx-6">
+      <div className="p-1 flex flex-wrap items-center justify-center mb-20 mx-14">
         {currentCards.map((card, index) => (
           <div
             key={index}
-            className="flex-shrink-0 m-6 relative overflow-hidden bg-gray-100 rounded-lg max-w-xs shadow-lg group h-[22rem] w-[22rem]"
+            className="flex-shrink-0 relative items-center justify-center overflow-hidden bg-gray-100 rounded-lg max-w-xs shadow-lg group h-[23rem] w-[22rem] m-10"
           >
             <svg
               className="absolute bottom-0 left-0 mb-8 scale-150 group-hover:scale-[1.65] transition-transform"
@@ -96,11 +82,14 @@ function TopSellers({addProductToCart}) {
                   opacity: 0.2,
                 }}
               ></div>
-              <img
-                className="relative w-40 h-[12rem]"
-                src={require(`../../../server/imeges/${card.image_url}`)}
-                alt={card.product_name}
-              />
+              <Link to={`/ProductDetails/${card.id}`}>
+                <img
+                  className="relative  "
+                  style={{ height: "190px", width: "190px" }}
+                  src={require(`../../../server/imeges/${card.image_url}`)}
+                  alt={card.product_name}
+                />
+              </Link>
             </div>
             <div className="relative flex flex-row justify-between text-black px-6 pb-6 mt-6">
               <div className="flex flex-col justify-between">
@@ -113,14 +102,18 @@ function TopSellers({addProductToCart}) {
                   </span>
                 </Link>
               </div>
+
               <div className="flex  justify-between">
                 <div className="flex-col">
-                  <span className="block opacity-75 mb-1">{card.price}</span>
+                  <span className="block opacity-75 mb-1">${card.price}</span>
                   <button
-                    onClick={() => {addProductToCart(card.id)}}
-                    className="block bg-indigo-900 rounded-full text-white text-xs font-bold px-3 py-2 leading-none items-center"
+                    onClick={() => {
+                      addProductToCart(card.id);
+                    }}
+                    type="button"
+                    className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg  hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-20"
                   >
-                    Add to cart
+                    <img src={cartPng} alt="cart"></img>
                   </button>
                 </div>
               </div>

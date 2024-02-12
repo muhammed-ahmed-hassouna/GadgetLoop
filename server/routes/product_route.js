@@ -29,11 +29,11 @@ router.post('/add', upload.fields([
   
 router.get('/getall', productController.getall);
 router.post('/getid', productController.getid);
-router.post('/update', productController.update);
+router.put('/update', productController.update);
 router.get('/mobile', productController.mobile);
 router.get('/laptop', productController.laptop);
 router.get('/screen', productController.screen);
-
+router.get('/search', productController.search);
 router.get('/watch', productController.watch);
 
 

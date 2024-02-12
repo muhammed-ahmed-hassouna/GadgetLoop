@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const EditUserDetails = () => {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
+    first_Name: "",
+    last_Name: "",
+    phone: "",
+    password: "",
+    confirm_Password: "",
   });
 
   const handleChange = (e) => {
@@ -19,33 +19,33 @@ const EditUserDetails = () => {
   };
 
   return (
-    <div className=" bg-gradient-to-r from-blue-500  to-blue-950 text-white p-8 rounded-lg shadow-lg" >
+    <div className=" bg-gradient-to-r from-blue-500  to-blue-950 text-white p-8 rounded-lg shadow-lg">
       <h1 className="text-3xl font-bold mb-5">Edit User Details</h1>
       <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-2 gap-4">
           <div className="mb-4">
-            <label className="block text-sm font-bold mb-2" htmlFor="firstName">
+            <label className="block text-sm font-bold mb-2" htmlFor="first_Name">
               First Name
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="firstName"
+              id="first_Name"
               type="text"
-              name="firstName"
-              value={formData.firstName}
+              name="first_Name"
+              value={formData.first_Name}
               onChange={handleChange}
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-bold mb-2" htmlFor="lastName">
+            <label className="block text-sm font-bold mb-2" htmlFor="last_Name">
               Last Name
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="lastName"
+              id="last_Name"
               type="text"
-              name="lastName"
-              value={formData.lastName}
+              name="last_Name"
+              value={formData.last_Name}
               onChange={handleChange}
             />
           </div>
@@ -78,15 +78,18 @@ const EditUserDetails = () => {
             />
           </div>
           <div className="mb-4">
-            <label className="block  text-sm font-bold mb-2" htmlFor="confirmPassword">
+            <label
+              className="block  text-sm font-bold mb-2"
+              htmlFor="confirm_Password"
+            >
               Confirm Password
             </label>
             <input
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="confirmPassword"
+              id="confirm_Password"
               type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
+              name="confirm_Password"
+              value={formData.confirm_Password}
               onChange={handleChange}
             />
           </div>

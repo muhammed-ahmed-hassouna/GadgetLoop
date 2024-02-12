@@ -2,38 +2,33 @@ import React from "react";
 import axios from "axios";
 import SearchCard from "./SearchCard";
 
-const Search = ({setOpenSearch,isOpenSearch}) => {
+const Search = ({ setOpenSearch, isOpenSearch }) => {
+
   const [searchInput, setSearchInput] = React.useState("");
   const [dataOfSearch, setdataOfSearch] = React.useState([]);
 
-  window.addEventListener("click", (event) => {
-    // Check if the target element is one of the excluded components
-    const excludedComponent1 = document.getElementById("navBar");
-    const excludedComponent2 = document.getElementById("searchButton");
-    // const excludedComponent3 = document.getElementById("SearchComponent");
-    // const excludedComponent4 = document.getElementsByClassName("osama");
-    // const excludedComponent5 = document.getElementById("osamaraed");
-    const excludedComponent6 = document.getElementById("default-search");
+  // window.addEventListener("click", (event) => {
+  //   // Check if the target element is one of the excluded components
+  //   // const excludedComponent1 = document.getElementById("navBar");
+  //   // const excludedComponent2 = document.getElementById("searchButton");
+  //   // const excludedComponent3 = document.getElementById("SearchComponent");
+  //   // const excludedComponent4 = document.getElementsByClassName("osama");
+  //   const excludedComponent5 = document.getElementById("osamaraed");
+  //   const excludedComponent6 = document.getElementById("default-search");
 
-    if (
-      event.target !== excludedComponent1 &&
-      event.target !== excludedComponent2 &&
-      // event.target !== excludedComponent3 &&
-      // event.target !== excludedComponent4 &&
-      // event.target !== excludedComponent5 &&
-      event.target !== excludedComponent6 &&
-      isOpenSearch == true
-    ) {
-      if (isOpenSearch == true) {
-        setOpenSearch(false);
-      }
-    }
-  });
+  //   if ( event.target !== excludedComponent5 && isOpenSearch == true) {
+  //     if (event.target !== excludedComponent6 && isOpenSearch == true) {
+  //       // if (event.target !== excludedComponent6 && isOpenSearch == true) {
+  //         
+  //       // }
+  //     }
+  //   }
+  // });
 
   const handleSearch = (e) => {
     setSearchInput(e);
     axios
-      .get(`https://fakestoreapi.com/products`)
+      .get(`http://localhost:3001/protduc/getall`)
       .then((response) => {
         const responseData = response.data;
         setdataOfSearch(responseData);
@@ -49,8 +44,14 @@ const Search = ({setOpenSearch,isOpenSearch}) => {
     console.log("Search Input:", searchInput);
   };
 
+  
+
   return (
     <>
+    <button
+    className="absolute top-2 right-4 text-[30px] text-white" 
+    onClick={()=>{setOpenSearch(false)}}
+     >X</button>
       <div
         id="SearchComponent"
         className=" bg-transparent flex flex-col w-7/12  h-96 content-center "
@@ -103,7 +104,12 @@ const Search = ({setOpenSearch,isOpenSearch}) => {
             </button>
           </div>
         </form>
-        <SearchCard dataOfSearch={dataOfSearch} />
+        <div
+          id="osamaraed"
+          className="flex flex-col mx-6 overflow-y-auto rounded-b-xl"
+        >
+          <SearchCard dataOfSearch={dataOfSearch} />
+        </div>
       </div>
     </>
   );

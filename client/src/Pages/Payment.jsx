@@ -1,16 +1,39 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import jordan from "../Assets/jordan.png";
-// import NavBar from "../Components/NavBar";
-// import axios from "axios";
-
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import axios from "axios";
+import Cookies from 'js-cookie';
+import Jordan from '../Assets/jordan.png'
 export const Payment = () => {
   const [quantity, setQuantity] = useState(2);
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Nike Air Max 2019", quantity: 2 },
-    { id: 2, name: "Another Product", quantity: 1 },
-    { id: 2, name: "Another Product", quantity: 1 },
-  ]);
+  const [cartItems, setCartItems] = useState([]);
+  const total = useRef(0);
+  const [len , setLen] = useState(0)
+
+  useEffect(() => {
+    const user_id = Cookies.get("user_id")
+    axios
+      .post("http://localhost:3001/cart",{"user_id": user_id})
+      .then((response) => {
+        setCartItems(response.data);
+        console.log("response",response);
+        console.log("len",response.data.length)
+        setLen(response.data.length)
+      })
+      .catch((error) => {
+        console.error("Error fetching cart items:", error);
+      });
+      
+      
+
+  }, []);
+
+
+  const memoizedValue = useMemo(() => {
+    total.current = 0;
+    for (let i = 0; i < len; i++) {
+      total.current += cartItems[i].total
+    }
+  },[len])
+
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -36,20 +59,20 @@ export const Payment = () => {
           <div class="rounded-lg ">
             {cartItems.map((item) => (
               <div
-                key={item.id}
+                key={item.product_id}
                 className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
               >
                 <img
-                  src="https://images.unsplash.com/photo-1587563871167-1ee9c731aefb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1131&q=80"
+                  src={require(`../../../server/imeges/${item.image_url}`)  }
                   alt=""
                   class="w-full rounded-lg sm:w-40"
                 />
                 <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                   <div class="mt-5 sm:mt-0">
                     <h2 class="text-lg font-bold text-gray-900">
-                      Nike Air Max 2019
-                    </h2>
-                    <p class="mt-1 text-xs text-gray-700">36EU - 4US</p>
+                    {item.product_name}
+                  </h2>
+                    <p class="mt-1 text-xs text-gray-700">{item.model}</p>
                   </div>
                   <div class="mt-4 flex justify-between im sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                     <div class="flex items-center border-gray-100">
@@ -76,7 +99,7 @@ export const Payment = () => {
                       </button>
                     </div>
                     <div class="flex items-center space-x-4">
-                      <p class="text-sm">259.000 ₭</p>
+                      <p class="text-sm">{item.price}</p>
                       <button onClick={() => removeProduct(item.id)}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -220,7 +243,7 @@ export const Payment = () => {
                   placeholder="Street Address"
                 />
                 <div class="pointer-events-none absolute inset-y-0 left-0 inline-flex items-center px-3">
-                  <img class="h-4 w-4 object-contain" src={jordan} alt="" />
+                  <img class="h-4 w-4 object-contain" src={Jordan} alt="" />
                 </div>
               </div>
 
@@ -235,7 +258,7 @@ export const Payment = () => {
             <div class="mt-6 border-t border-b py-2"></div>
             <div class="mt-6 flex items-center justify-between">
               <p class="text-sm font-medium text-gray-900">Total</p>
-              <p class="text-2xl font-semibold text-gray-900">$408.00</p>
+              <p class="text-2xl font-semibold text-gray-900">${(total.current).toFixed(2)}</p>
             </div>
           </div>
           <button

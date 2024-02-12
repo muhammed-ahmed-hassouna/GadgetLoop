@@ -32,9 +32,9 @@ function Discounts() {
             }}
           >
             <div className="md:w-1/2">
-              <p className="font-bold text-sm uppercase">Sales</p>
+              <p className="font-bold  text-sm uppercase">Sales</p>
               <p className="text-3xl font-bold">
-                Avail yourself of a 50% discount on our laptop collection!{" "}
+                Avail yourself of a 50% <br/> discount on our laptop collection!{" "}
               </p>
               <p className="text-xl mb-10 leading-none"></p>
               <a
@@ -58,9 +58,9 @@ function Discounts() {
               backgroundImage: `url(${offer2})`,
             }}
           >
-            <p className="font-bold text-sm uppercase">Sales</p>
-            <p className="text-3xl font-bold">
-              Huge savings alert: Get 70% off on all smart TVs - Don't miss out!
+            <p className="font-bold text-white text-sm uppercase">Sales</p>
+            <p className="text-3xl  text-white font-bold">
+              Huge savings alert:<br/>  Get 70% off on all smart TVs - Don't miss out!
             </p>
             <p className="text-2xl mb-10 leading-none"></p>
             <a

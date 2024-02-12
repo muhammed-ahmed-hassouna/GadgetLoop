@@ -25,6 +25,18 @@ class BlogModel {
       throw error;
     }
   }
+  async search(searchParam) {
+    try {
+      const searchResults = await search('your_search_term');
+console.log(searchResults);
+
+      const result = await pool.query('SELECT * FROM public.product WHERE product_name LIKE $1;', [`%${searchParam}%`]);
+      return result.rows;
+    } catch (error) {
+      throw error;
+    }
+  }
+  
 
 
   async getid(id) {

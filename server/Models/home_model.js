@@ -24,7 +24,7 @@ class HomeModel {
 
   async get() {
     try {
-      const result = await pool.query('SELECT id, product_name, descreption, price, image_url, model, catalog_id, rating, count  FROM public.product LIMIT  12;');
+      const result = await pool.query('SELECT id, product_name, descreption, price, image_url, model, catalog_id, rating, count  FROM public.product  order by id desc LIMIT  12;');
       return result.rows;
     } catch (error) {
       throw error;

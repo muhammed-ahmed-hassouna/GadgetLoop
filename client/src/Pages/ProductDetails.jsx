@@ -24,7 +24,7 @@ const ProductDetails = ({addProductToCart}) => {
    useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(`http://localhost:3001/protduc/getid?id=34`);
+        const response = await axios.post(`http://localhost:3001/protduc/getid?id=${id}`);
         setProdect(response.data[0]);
         setimage1(require(`../../../server/imeges/${prodect.image_url2}`));
         setimage2(require(`../../../server/imeges/${prodect.image_url3}`));

@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 require('dotenv').config();
 const bcrypt = require('bcrypt');
 const Joi = require('joi');
+const nodemailer = require('nodemailer');
 
 const registerUser = async (req, res) => {
     // TLD " Top-Level-Domain Like org,gov,edu,maul"
@@ -119,54 +120,6 @@ const loginUser = async (req, res) => {
     }
 };
 
-const updatepassword = async (req, res) => {
-    const newPassword = req.body.newPassword;
-    const email = req.body.email;
-    const confirm_password = req.body.confirm_password;
-    const checkEmailQuery = "SELECT id, password FROM users WHERE email = $1";
-    const updateQuery = 'UPDATE users SET password = $1 WHERE email = $2';
-
-    try {
-        const schema = Joi.object({
-            newPassword: Joi.string()
-                .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&!])[A-Za-z\\d@#$%^&!]{8,12}$'))
-                .required(),
-            confirm_password: Joi.any().equal(Joi.ref('newPassword')).required()
-        });
-
-        const validate = schema.validate({ newPassword,confirm_password });
-        if (validate.error) {
-            res.status(400).json({ error: validate.error.details });
-        } else {
-            const emailCheck = await db.query(checkEmailQuery, [email]);
-            if (emailCheck.rows.length > 0) {
-                const existingPassword = emailCheck.rows[0].password;
-                const passwordMatch = await bcrypt.compare(newPassword, existingPassword);
-                if (passwordMatch) {
-                    res.status(400).json({
-                        message: "You entered the same password as the current one",
-                    });
-                    // console.log(existingPassword);
-                    // console.log(newPassword);
-                    // console.log(passwordMatch);
-                } else {
-                    const hashedPassword = await bcrypt.hash(newPassword, 10);
-                    const result = await db.query(updateQuery, [hashedPassword, email]);
-                    res.status(200).json({
-                        message: 'Password updated successfully',
-                    });
-                }
-            } else {
-                res.status(400).json({
-                    message: "Email not found",
-                });
-            }
-        }
-    } catch (err) {
-        console.error('Error updating password:', err);
-        res.status(500).json({ error: 'An error occurred while updating the password' });
-    }
-};
 
 const getUserData = async (req, res) => {
     try {
@@ -179,10 +132,125 @@ const getUserData = async (req, res) => {
 };
 
 
+const express = require("express");
+const app = express();
+app.use(express.json());
+var cors = require('cors');
+app.use(cors());
+
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'mohammedhassouna000@gmail.com',
+        pass: 'iyfyzqcsphpdwgvz'
+    }
+});
+
+
+// let emailSent = false;
+const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+};
+
+
+const generatedVerificationCode = generateVerificationCode();
+
+const sendVerificationEmail = async (email, verificationCode) => {
+    const mailOptions = {
+        from: 'mohammedhassouna000@gmail.com',
+        to: email,
+        subject: 'Email Verification Code',
+        text: `Your email verification code is: ${verificationCode}`
+    };
+    console.log('Sending verification email to ' + email);
+    // emailSent = true;
+
+    try {
+        await transporter.sendMail(mailOptions);
+
+    } catch (error) {
+        console.error('Error sending email:', error);
+        throw new Error('Failed to send email verification');
+    }
+};
+
+let emailFromSendEmail;
+
+const sendEmail = async (req, res) => {
+    try {
+        const email = req.body.email;
+        emailFromSendEmail = email
+        const checkEmailQuery = "SELECT id, password FROM users WHERE email = $1";
+
+        const emailCheck = await db.query(checkEmailQuery, [email]);
+        if (emailCheck.rows.length > 0) {
+            await sendVerificationEmail(email, generatedVerificationCode);
+            res.status(200).json({ message: "Verification code email has been sent." });
+        } else {
+            res.status(400).json({ error: "Email not found in the database." });
+        }
+    } catch (error) {
+        console.error("Error sending verification email:", error);
+        res.status(500).json({ error: "An error occurred while sending the verification email." });
+    }
+};
+
+const verificationCode = async (req, res) => {
+
+    const verificationCode = req.body.verificationCode;
+
+    if (verificationCode === generatedVerificationCode) {
+        res.status(200).json({
+            message: 'You can go to reset password',
+        });
+    }
+    else {
+        res.status(400).json({
+            message: "Invalid verification code",
+        });
+    }
+}
+
+const updatepassword = async (req, res) => {
+    const newPassword = req.body.newPassword;
+    const confirm_password = req.body.confirm_password;
+    const email = emailFromSendEmail;
+
+    const updateQuery = 'UPDATE public.users SET password = $1 WHERE email = $2';
+
+    try {
+        const schema = Joi.object({
+            newPassword: Joi.string()
+                .pattern(new RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@#$%^&!])[A-Za-z\\d@#$%^&!]{8,12}$'))
+                .required(),
+            confirm_password: Joi.any().valid(Joi.ref('newPassword')).required()
+        });
+
+        const validate = schema.validate({ newPassword, confirm_password });
+        if (validate.error) {
+            res.status(400).json({ error: validate.error.details });
+        } else {
+            const hashedPassword = await bcrypt.hash(newPassword, 10);
+            await db.query(updateQuery, [hashedPassword, email]);
+            res.status(200).json({
+                message: 'Password updated successfully!',
+            });
+        }
+    } catch (err) {
+        console.error('Error updating password:', err);
+        res.status(500).json({ error: 'An error occurred while updating the password' });
+    }
+};
+
 
 module.exports = {
     registerUser,
     loginUser,
     updatepassword,
     getUserData,
+    verificationCode,
+    sendEmail
+
 };

@@ -101,6 +101,15 @@ async mobile(req, res) {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+async search(req, res) {
+  try {
+    const product = await productModel.search();
+    res.json(product);
+  } catch (error) {
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
   
 }
 

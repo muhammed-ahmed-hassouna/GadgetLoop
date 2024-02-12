@@ -22,10 +22,12 @@ app.use(passport.session());
 const userrouter = require('./routes/user_routes');
 const OAuthRouter = require('./routes/OAuth_routes');
 const cartController = require('./routes/cart_routes');
+const contactController = require('./routes/contact_routes');
 
 app.use(userrouter);
 app.use(OAuthRouter);
 app.use(cartController);
+app.use(contactController);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

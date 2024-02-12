@@ -3,10 +3,11 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import mobile from "../Assets/mobile.jpg";
 import laptop from "../Assets/laptop.jpg";
-import pc from "../Assets/pc.jpg";
+import pc from "../Assets/watch.jpg";
 import monitor from "../Assets/monitor.jpg";
+import { Link } from "react-router-dom";
 
-function CategoriesSection() {
+function CategoriesSection({ setcategoriesSelected }) {
   useEffect(() => {
     AOS.init();
   }, []);
@@ -29,8 +30,11 @@ function CategoriesSection() {
                 src={mobile}
                 alt=""
               />
-              <button class="dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 bottom-4 z-10 absolute text-base font-medium leading-none text-gray-800 py-3 w-36 bg-white">
-                Mobiles
+              <button
+                onClick={() => setcategoriesSelected("mobile")}
+                class="dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 bottom-4 z-10 absolute text-base font-medium leading-none text-gray-800 py-3 w-36 bg-white"
+              >
+                <Link to="/Categories">Mobiles</Link>
               </button>
               <div class="absolute opacity-0 group-hover:opacity-100 transition duration-500 bottom-3 py-6 z-0 px-20 w-36 bg-white bg-opacity-50"></div>
             </div>
@@ -45,8 +49,12 @@ function CategoriesSection() {
                   src={laptop}
                   alt="/"
                 />
-                <button class="dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 bottom-4 z-10 absolute text-base font-medium leading-none text-gray-800 py-3 w-36 bg-white">
-                  Laptops
+
+                <button
+                  onClick={() => setcategoriesSelected("laptop")}
+                  class="dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 bottom-4 z-10 absolute text-base font-medium leading-none text-gray-800 py-3 w-36 bg-white"
+                >
+                  <Link to="/Categories"> Laptops</Link>
                 </button>
                 <div class="absolute opacity-0 group-hover:opacity-100 transition duration-500 bottom-3 py-6 z-0 px-20 w-36 bg-white bg-opacity-50"></div>
               </div>
@@ -56,9 +64,14 @@ function CategoriesSection() {
                   src={pc}
                   alt="/"
                 />
-                <button class="dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 bottom-4 z-10 absolute text-base font-medium leading-none text-gray-800 py-3 w-36 bg-white">
-                  Personal Computers
+
+                <button
+                  onClick={() => setcategoriesSelected("watch")}
+                  class="dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 bottom-4 z-10 absolute text-base font-medium leading-none text-gray-800 py-3 w-36 bg-white"
+                >
+                  <Link to="/Categories">ًWatch</Link>
                 </button>
+
                 <div class="absolute opacity-0 group-hover:opacity-100 transition duration-500 bottom-3 py-6 z-0 px-20 w-36 bg-white bg-opacity-50"></div>
               </div>
             </div>
@@ -72,9 +85,14 @@ function CategoriesSection() {
                 src={monitor}
                 alt="/"
               />
-              <button class="dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 bottom-4 z-10 absolute text-base font-medium leading-none text-gray-800 py-3 w-36 bg-white">
-                Monitors
+
+              <button
+                onClick={() => setcategoriesSelected("screen")}
+                class="dark:bg-gray-800 dark:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 bottom-4 z-10 absolute text-base font-medium leading-none text-gray-800 py-3 w-36 bg-white"
+              >
+                <Link to="/Categories"> Monitors </Link>
               </button>
+
               <div class="absolute opacity-0 group-hover:opacity-100 transition duration-500 bottom-3 py-6 z-0 px-20 w-36 bg-white bg-opacity-50"></div>
             </div>
           </div>

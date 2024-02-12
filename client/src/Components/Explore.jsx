@@ -4,10 +4,11 @@ import axios from "axios";
 import samsung from "../Assets/samsung.png";
 import "../Explore.css";
 
+
 function Explore({addProductToCart}) {
   const [cardData, setCardData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const cardsPerPage = 4;
+  const cardsPerPage = 3;
 
   useEffect(() => {
     axios
@@ -20,6 +21,7 @@ function Explore({addProductToCart}) {
         console.error("Error response:", error.response);
       });
   }, []);
+
 
 
 
@@ -63,14 +65,15 @@ function Explore({addProductToCart}) {
         {currentCards.map((card, index) => (
           <div
             key={index}
-            className="explore relative overflow-hidden bg-gray-100 rounded-lg max-w-xs shadow-lg group h-[22rem] w-[14rem] m-6"
+            className="explore relative overflow-hidden bg-gray-100 rounded-lg max-w-xs shadow-lg group h-[21rem] w-[22rem] m-10"
           >
             <svg className="absolute bottom-0 left-0 mb-8 scale-150 group-hover:scale-[1.65] transition-transform"></svg>
             <div className="relative pt-10 px-10 flex items-center justify-center group-hover:scale-110 transition-transform">
               <div className="block absolute w-48 h-48 bottom-0 left-0 -mb-24 ml-3"></div>
               <img
-                className="relative w-40 h-[12rem]"
-                src={samsung}
+                className="relative w-40 "
+                style={{ height: '160px' }}
+                src={require(`../../../server/imeges/${card.image_url}`)}
                 alt={card.product_name}
               />
             </div>
@@ -87,12 +90,16 @@ function Explore({addProductToCart}) {
               </div>
               <div className="flex justify-between">
                 <div className="flex-col">
-                  <span className="block opacity-75 mb-1 ">{`${card.price}`}</span>
+                  <span className="block opacity-75 mb-1 ">${`${card.price}`}</span>
                 </div>
               </div>
             </div>
             <button
-              onClick={() => {addProductToCart(card.id)}}
+             onClick={() => { 
+              addProductToCart(card.id); 
+          
+            }}
+            
               className="bg-indigo-900 h-19 text-white text-xs font-bold px-3 py-2 leading-none items-center"
             >
               Add to cart
